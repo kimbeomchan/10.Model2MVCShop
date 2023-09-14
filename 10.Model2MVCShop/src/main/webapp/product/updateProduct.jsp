@@ -87,7 +87,9 @@ $(function () {
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<img src = "/images/uploadFiles/../../images/empty.GIF"/>
+			<img src = "/images/uploadFiles/${vo.fileName}"/>
+			<input type="file" name="file" class="ct_input_g" 
+							style="width: 200px; height: 19px" maxLength="13"/>
 		</td>
 	</tr>
 	<tr>

@@ -1,5 +1,10 @@
 package com.model2.mvc.service.product.impl;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.product.ProductService;
@@ -30,17 +36,50 @@ public class ProductServiceImpl implements ProductService{
 		System.out.println(this.getClass());
 	}
 
+	
 	///Method
 	public Product addProduct(Product product) throws Exception {
 		System.out.println(product);
 		
-		
 		product.setManuDate(product.getManuDate().replace("-", ""));
+//		
+//		// File ºÒ·¯¿È
+//		MultipartFile[] uploadFile = product.getFiles();
+//		
+//		System.out.println("uploadFile.length :: " + uploadFile.length);
+//		System.out.println("uploadFile :: " + uploadFile);
+//		
+//		String fileName = "";
+//		byte[] bytes;
+//		if(uploadFile.length > 0) {
+//			
+//			for(int i = 0; i < uploadFile.length-1; i++ ) { ////  MultipartFile file : uploadFile
+//				
+//				if( i >= 0 && i < uploadFile.length-1) {
+//					
+//					fileName += product.getProdName() + "_" + uploadFile[i].getOriginalFilename();
+//						
+//				} else if( i == uploadFile.length-1 ) {
+//					
+//					fileName += "," + product.getProdName() + "_" + uploadFile[i].getOriginalFilename();
+//					
+//				}
+//				
+//				
+//				System.out.println("\nMulipartFile Name :: " + fileName + "======== "+ i +" ===============================\n");
+//				
+//				Path path = Paths.get("/images/uploadFiles/" + fileName);
+//				Files.copy(uploadFile[i].getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+//			}
+//		
+//			product.setFileName(fileName);
+//		}
 		
 		productDao.insertProduct(product);
 		return product;
-	
 	}
+	
+	
 
 	public Product getProduct(int prodNo) throws Exception {
 		return productDao.getProduct(prodNo);

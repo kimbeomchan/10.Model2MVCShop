@@ -21,7 +21,8 @@
 			classpath:config/context-aspect.xml,
 			classpath:config/context-common.xml,
 			classpath:config/context-mybatis.xml,
-			classpath:config/context-transaction.xml
+			classpath:config/context-transaction.xml,
+			classpath:config/context-multipart.xml
 		</param-value>
 	</context-param>
 
@@ -54,7 +55,7 @@
 	</filter-mapping>	
 
  	 <!-- ::SpringMVC 에서의 Front Controller(단일인입점)  DispatcherServlet 선언 -->
-	  <servlet>
+	<servlet>
 		    <servlet-name>action</servlet-name>
 		    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		    
@@ -78,5 +79,5 @@
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
     </welcome-file-list>
-	
+    
 </web-app>

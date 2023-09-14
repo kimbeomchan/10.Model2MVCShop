@@ -1,5 +1,8 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,16 +17,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
-import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductService;
-import com.model2.mvc.service.user.UserService;
 
 
-//==> 회원관리 Controller
 @Controller
 @RequestMapping("/product/*")
 public class ProductController {
@@ -39,27 +41,58 @@ public class ProductController {
 	}
 	
 	//@Value("#{commonProperties['pageUnit']}")
-	@Value("#{commonProperties['pageUnit'] ?: 3}")
+	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
 	
 	//@Value("#{commonProperties['pageSize']}")
-	@Value("#{commonProperties['pageSize'] ?: 2}")
+	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 	
 	
 	//@RequestMapping("/addProduct.do")
 	@RequestMapping( value="addProduct", method=RequestMethod.POST )
-	public String addProduct( @ModelAttribute("product") Product product, Model model) throws Exception {
+	public String addProduct( @ModelAttribute("product") Product product, Model model, MultipartHttpServletRequest request) throws Exception {
 
 		System.out.println("/product/addProduct : POST");
+		//
 		
+		
+		String uploadPath = request.getRealPath("/images/uploadFiles/");
+	    String fileChangeName = "";
+	    String fileMultiName = "";
+	    
+	    for(int i = 0; i < product.getFiles().length; i++) {
+	    	
+	        System.out.println("기존 파일명 : " + product.getFiles()[i].getOriginalFilename());
+	        
+	        fileChangeName = product.getProdName() + "_" + product.getFiles()[i].getOriginalFilename();
+	        //==> $ProdName_$FileName.jsp
+	        System.out.println("변경된 파일명 : " + fileChangeName);
+	        
+	        //==> /images/uploadFiles/$Image_File
+	        File f = new File(uploadPath + fileChangeName);
+	        
+	        product.getFiles()[i].transferTo(f);
+	        
+	        if(i == 0) {
+	        	fileMultiName += fileChangeName;
+	        }
+	        else {
+	        	fileMultiName += ","+fileChangeName;
+	        }
+	    }
+	    System.out.println("*"+fileMultiName);
+	    
+	    product.setFileName(fileMultiName);
+	    
+	    String[] fileSplitArray = fileMultiName.split(",");
+	    //product.setFileName(fileSplitArray);
+	    
+		System.out.println("ProductController :: addProduct :: " + product);
 		productService.addProduct(product);
 		
-		System.out.println("/product/addProduct : POST -------!");
-		
 		model.addAttribute("product", product);
-		
-		System.out.println("/product/addProduct : POST -------!!");
+		model.addAttribute("fileSplitArray", fileSplitArray);
 		
 		return "forward:/product/addProduct.jsp";
 	}
@@ -166,24 +199,6 @@ public class ProductController {
 		return "forward:/product/updateProduct.jsp";
 	}
 	
-	
-	//@RequestMapping("/updateProductView.do")
-//	@RequestMapping( value="updateProductView", method=RequestMethod.GET )
-//	public String updateProductView( @RequestParam("prodNo") int prodNo, 
-//									 @RequestParam(value="menu",required=false) String menu, Model model ) throws Exception{
-//
-//		System.out.println("/updateProductView : POST");
-//		
-//		//Business Logic
-//		Product product = productService.getProduct(prodNo);
-//		
-//		// Model 과 View 연결
-//		model.addAttribute("vo", product);
-//		
-//		System.out.println("/updateProductView :: " + product);
-//		
-//		return "forward:/product/updateProductView.jsp";
-//	}
 	@RequestMapping( value="updateProductView", method=RequestMethod.POST )
 	public String updateProductView( @RequestParam("prodNo") int prodNo, 
 									 @RequestParam(value="menu",required=false) String menu, Model model ) throws Exception{
@@ -194,9 +209,17 @@ public class ProductController {
 		Product product = productService.getProduct(prodNo);
 		
 		// Model 과 View 연결
-		model.addAttribute("vo", product);
 		
-		System.out.println("/updateProductView :: " + product);
+		String fileMultiName = product.getFileName();
+		
+		String[] fileSplitArray;
+		
+		
+		if(fileMultiName.length() > 0 ) {
+			product.setFileSplitArray(fileMultiName.split(","));
+		}
+		
+		model.addAttribute("vo", product);
 		
 		return "forward:/product/updateProductView.jsp";
 	}

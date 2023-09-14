@@ -44,12 +44,10 @@
 			//document.detailForm.action='/product/addProduct';
 			//document.detailForm.submit();
 			
-			$("form").attr("method" , "POST").attr("action" , "/product/addProduct").submit();
+			$("form").attr("method" , "POST").attr("action" , "/product/addProduct").attr("enctype", "multipart/form-data").submit();
 		}
-		
-		
-		
-		
+
+
 		$(function() {
 			$("td.ct_btn01:contains('등록')").on("click", function(){ 
 				fncAddProduct();
@@ -68,8 +66,8 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-<!-- <form name="detailForm" method="post"> -->
 <form name="detailForm" >
+<!-- <form name="detailForm"> -->
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -158,8 +156,8 @@
 		<td width="104" class="ct_write">상품이미지</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input		type="text" name="fileName" class="ct_input_g" 
-							style="width: 200px; height: 19px" maxLength="13"/>
+			<input type="file" name="files" class="ct_input_g" 
+							style="width: 200px; height: 19px" maxLength="13" multiple="multiple"/>
 		</td>
 	</tr>
 	<tr>
@@ -199,7 +197,7 @@
 		</td>
 	</tr>
 </table>
-
 </form>
+
 </body>
 </html>

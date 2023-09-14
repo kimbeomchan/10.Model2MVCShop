@@ -135,13 +135,16 @@ public class ProductRestController {
 		
 		System.out.println("/product/json/listProduct : POST");
 		
+		System.out.println("TEST :: " + search);
+		
+		
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
 		}
 		
 		// Business logic ผ๖วเ
 		Map<String , Object> map = productService.getProductList(search);
-		
+		//map.put("productList", search);
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
 		

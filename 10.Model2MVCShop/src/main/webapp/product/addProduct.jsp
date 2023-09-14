@@ -124,9 +124,16 @@
 			<!-- 테이블 시작 -->
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td height="26">
-						<img src="/images/uploadFiles/../../images/empty.GIF"/>
-					</td>
+					<c:set var="i" value="0" />
+					<c:forEach var="file" items="${fileSplitArray}" >
+						<c:set var="i" value="${ i }" />
+						<td class="ct_write01">
+							<img src = "/images/uploadFiles/${ file }"/>
+						</td>
+					</c:forEach>	
+					<%-- <td height="26">
+						<img src="/images/uploadFiles/${product.fileName}"/>
+					</td> --%>
 				</tr>
 			</table>
 		</td>
