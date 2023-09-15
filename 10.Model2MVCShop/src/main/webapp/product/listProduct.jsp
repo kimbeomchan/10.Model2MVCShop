@@ -136,12 +136,6 @@
 	    });
 	});
 
-	
-	function loadMoreData() {
-		alert("scroll event!");
-	};
-	
-	
 	$(function(){
 		$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
 		var win = $(window);

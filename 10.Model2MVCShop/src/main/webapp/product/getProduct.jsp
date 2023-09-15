@@ -17,7 +17,7 @@ $(function () {
 	var prodNo = $(this).data('prodno');
 	
 	$(".ct_btn01:contains('±¸¸Å')").on("click", function(){
-		self.location.href = "/purchase/addPurchaseView?prodNo=" + prodNo;
+		$("form").attr("method", "POST").attr("action", "/purchase/addPurchaseView?prodNo=" + prodNo).submit();
 	})
 })
 
