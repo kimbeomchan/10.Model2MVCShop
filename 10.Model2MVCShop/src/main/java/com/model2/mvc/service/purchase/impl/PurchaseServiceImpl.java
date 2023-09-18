@@ -43,6 +43,9 @@ public class PurchaseServiceImpl implements PurchaseService{
 		// TODO Auto-generated method stub
 		search.setSearchKeyword(userId);
 		List<Purchase> list= purchaseDao.getPurchaseList(search);
+		
+		System.out.println("\n\n list :: \n" + list + "\n\n");
+		
 		int totalCount = purchaseDao.getTotalCount(search);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

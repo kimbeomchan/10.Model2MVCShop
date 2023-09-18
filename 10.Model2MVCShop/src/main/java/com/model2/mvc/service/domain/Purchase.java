@@ -10,14 +10,13 @@ public class Purchase {
 	
 	private User buyer;
 	
+	private Product purchaseProd;
+	
 	private String dlvyAddr;
 	private String dlvyDate;
 	private String dlvyRequest;
 	private Date orderDate;
 	private String paymentOption;
-	
-	private Product purchaseProd;
-	
 	private String receiverName;
 	private String receiverPhone;
 	private String tranCode;

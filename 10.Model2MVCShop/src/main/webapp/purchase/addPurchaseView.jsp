@@ -21,7 +21,7 @@ function fncPurchaseProduct(){
 	var receiverPhone = document.detailForm.receiverPhone.value;
 	var dlvyAddr = document.detailForm.receiverPhone.value;
 	var dlvyRequest = document.detailForm.receiverPhone.value;
-	var dlvyDay = document.detailForm.dlvyDay.value;
+	var dlvyDate = document.detailForm.dlvyDate.value;
 
 	if(receiverName == null || receiverName.length<1){
 		alert("구매자이름은 반드시 입력하여야 합니다.");
@@ -36,7 +36,7 @@ function fncPurchaseProduct(){
 		return;
 	}
 		
-	document.detailForm.action='/addPurchase.do?prodNo = ${purchase.purchaseProd.prodNo}';
+	document.detailForm.action="/purchase/addPurchase?prodNo=${purchase.purchaseProd.prodNo}";
 	document.detailForm.submit();
 }
 </script>
@@ -104,9 +104,14 @@ function fncPurchaseProduct(){
 			상품이미지 <img 	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<img src = "/images/uploadFiles/../../images/empty.GIF"/>
-		</td>
+			<td class="ct_write01">
+				<c:set var="i" value="0" />
+				<c:forEach var="file" items="${purchase.purchaseProd.fileName}" >
+					<c:set var="i" value="${ file }" />
+						<img src = "/images/uploadFiles/${ file }" height='150'/>
+				</c:forEach>
+				<br>
+			</td>
 	</tr>
 
 	<tr>
@@ -237,10 +242,10 @@ function fncPurchaseProduct(){
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input type="text" name="dlvyDay" readonly="readonly" class="ct_input_g"  
+			<input type="text" name="dlvyDate" readonly="readonly" class="ct_input_g"  
 						style="width: 100px; height: 19px"	maxLength="10" minLength="6"/>
 				&nbsp;<img src="../images/ct_icon_date.gif" width="15" height="15" 
-								onclick="show_calendar('document.detailForm.dlvyDay', document.detailForm.dlvyDay.value)"/>
+								onclick="show_calendar('document.detailForm.dlvyDate', document.detailForm.dlvyDate.value)"/>
 		</td>
 	</tr>
 	<tr>

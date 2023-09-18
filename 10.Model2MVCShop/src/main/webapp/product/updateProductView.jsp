@@ -147,7 +147,9 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">상품이미지</td>
+		<td width="104" class="ct_write">
+			상품이미지 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		
 		<c:set var="i" value="0" />
@@ -155,7 +157,7 @@
 		<c:forEach var="file" items="${vo.fileName}" >
 			<c:set var="i" value="${ i }" />
 			
-				<img src = "/images/uploadFiles/${ file }"/>
+				<img src = "/images/uploadFiles/${ file }"/>${ file }
 		</c:forEach>
 		</td>
 		

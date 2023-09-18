@@ -71,29 +71,28 @@
 								"Content-Type" : "application/json"
 							},
 							success : function(JSONData) {
+								var file = JSONData.fileName.split(',')[0];
 								var display = "<h3>"
 													+ "상품명 : " + JSONData.prodName + "<br/>"
 													+ "상품 상세정보 : " + JSONData.prodDetail + "<br/>"
 													+ "제조일자 : " + JSONData.manuDate + "<br/>"
 													+ "가 격 : " + JSONData.price + " 원 <br/>"
 													+ "상품 이미지  <br/>"
-													+ " : <img src = /images/uploadFiles/" + JSONData.fileName + "/>"
+													+ "<img width='200' height='150' src = /images/uploadFiles/" + file + "/>"
 													+ "</h3>";
 								
 								$("h3").remove();
-								$("#"+prodNo+"").html(display);
+								$("#"+JSONData.prodNo+"").html(display);
 							}
 						}		
 					);
-				}, 1000);
+				}, 100);
 			}
 		);
 		
 		$( "#tableBody" ).on("mouseleave", ".ct_list_pop td:nth-child(3)", function() {
 			$("h3").remove();
-		 	$( this ).fadeOut( 30 );
-		 	$( this ).fadeIn( 30 );
-		}); 
+		});
 
 		$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
 	});
@@ -127,7 +126,11 @@
 	                $("input[name=searchKeyword]").autocomplete("option", "source", availableTags); // Autocomplete의 source 옵션을 업데이트
 	            }
 	        });
+	        
 	    });
+	    
+	    
+	    
 
 	    $("#inputBox").on("focus", function() {
 	        if (availableTags.length >= 0) {
@@ -164,7 +167,7 @@
 		    	    	$.each(productList, function(index, product){
 		    	    		var row = 
 		    	    			"<tr class='ct_list_pop' id='list'>" +
-		    	            	"<td align='center'>" + ++countNo + "</td>" +
+		    	            	"<td align='center' height='100'>" + ++countNo + "</td>" +
 		    	            	"<td></td>" +
 		    	            	"<td align='left' data-prodno='" + product.prodNo + "'>" + product.prodName + "</td>" +
 		    	            	"<td></td>" +
@@ -174,15 +177,14 @@
 		    	            	"<td></td>" +
 		    	            	"<td align='left'>" +
 		    	            		(menu == 'manage' ? 
-		    	                        (product.proTranCode == null ? '판매중' :
+		    	                        (product.proTranCode.trim() == null ? '판매중' :
 		    	                          (product.proTranCode.trim() == '1' ? '구매완료' :
 		    	                            (product.proTranCode.trim() == '2' ? '배송중' :
 		    	                              (product.proTranCode.trim() == '3' ? '배송완료' : '')))) : '') +
-		    	                (menu == "search" ? (product.proTranCode == null ? "판매중" : "판매완료") : '') +
+		    	                (menu == "search" ? (product.proTranCode.trim() == null ? "판매중" : "판매완료") : '') +
 		    	                "</td></tr>" +
-		    	                "<tr><td colspan='11' bgcolor='D6D7D6' height='5'></td></tr>" +
 		    	                "<tr>" +
-		    	        		"<td id=" +  product.prodNo + " colspan='11' bgcolor='D6D7D6' height='50'></td>" +
+		    	        		"<td id=" +  product.prodNo + " colspan='11' bgcolor='D6D7D6' height='5'></td>" +
 		    	        		"</tr>";	
 		    	        		
 		    	    			$("#tableBody").append(row);		// 받아온 데이터 추가
@@ -273,7 +275,8 @@
 <tbody id="tableBody" >
 	<tr>
 		<td colspan="11" >
-			전체  ${resultPage.totalCount}  건수,	현재 ${resultPage.currentPage} 페이지
+			전체 상품 :  ${resultPage.totalCount}  건수<%-- ,	현재 ${resultPage.currentPage} 페이지 --%>
+			
 		</td>
 	</tr>
 	<tr>
@@ -300,7 +303,7 @@
 	<c:forEach var="vo" items="${list}" >
 		<c:set var="i" value="${ i + 1 }" />
 	<tr id="list" class="ct_list_pop" >
-		<td align="center">${ i }</td>
+		<td align="center" height="100">${ i }</td>
 		<td></td>
 		<td align="left" data-prodno="${vo.prodNo}"> ${vo.prodName}</td>
 		<td></td>
@@ -333,7 +336,7 @@
 	
 	
 	<tr>
-		<td id="${vo.prodNo}" colspan="11" bgcolor="D6D7D6" height="50"></td>
+		<td id="${vo.prodNo}" colspan="11" bgcolor="D6D7D6" height="5"></td>
 	</tr>	
 	
 	</c:forEach>

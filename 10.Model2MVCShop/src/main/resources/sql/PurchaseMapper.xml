@@ -30,7 +30,8 @@
 		</association>
 		
 		<association property="purchaseProd"	javaType="Product" >
-			<id property="prodNo"			column="prod_no"		jdbcType="NUMERIC" />
+			<id property="prodNo"			    column="prod_no"			jdbcType="NUMERIC" />
+			<result property="prodName"			column="prod_name" 			jdbcType="VARCHAR"/>
 			<result property="prodDetail" 		column="prod_detail" 		jdbcType="VARCHAR" />
 			<result property="manuDate" 		column="manufacture_day"	jdbcType="VARCHAR" />
 			<result property="price" 			column="price" 				jdbcType="NUMERIC" />
@@ -84,6 +85,17 @@
 
 	<!-- SQL : SELECT LIST -->
 	<select  id="getPurchaseList"  parameterType="search"	resultMap="PurchaseSelectMap">
+		<!-- SELECT *
+  		FROM ( SELECT inner_table.*, ROWNUM AS row_seq
+  						FROM ( SELECT t.tran_no, p.prod_no, t.buyer_id, t.order_date, t.tran_status_code 
+										FROM transaction t, product p, users u 
+										WHERE t.prod_no = p.prod_no 
+										AND t.buyer_id = u.user_id 
+										AND u.user_id = #{buyerId}
+										ORDER BY tran_no  ) inner_table
+  						WHERE ROWNUM <![CDATA[<=]]> #{search.currentPage}*#{search.pageSize} )
+  		WHERE row_seq BETWEEN (#{search.currentPage}-1)*#{search.pageSize}+1
+  		AND #{search.currentPage}*#{search.pageSize} -->
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT 
@@ -95,7 +107,7 @@
 											</if>
 											ORDER BY p.prod_no ) inner_table
 						WHERE ROWNUM &lt;= #{endRowNum} )
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
 	 </select>
 	 	<!--  위 두번째 subQuery 의  
 	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는

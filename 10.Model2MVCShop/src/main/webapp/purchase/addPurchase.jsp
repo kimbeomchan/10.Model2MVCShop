@@ -11,7 +11,20 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<script type="text/javascript" src="../javascript/calendar.js">
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../javascript/calendar.js"></script>
+<script type="text/javascript">
+
+function fncListPurchasePage(){
+	$("form").attr("method", "POST").attr("action", "/purchase/listPurchase").submit();
+}
+
+$(function () {
+	$(".ct_btn01:contains('조회')").on("click", function() {
+		fncListPurchasePage();
+	});
+});
+
 </script>
 
 </head>
@@ -19,6 +32,8 @@
 <body bgcolor="#ffffff" text="#000000">
 
 <form name="detailForm" method="post">
+<input type="hidden" name="userId" value="${user.userId}"/>
+<input type="hidden" name="prodNo" value="${purchase.purchaseProd.prodNo}"/>
 
 <table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -76,8 +91,14 @@
 			상품이미지 <img 	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<img src = "/images/uploadFiles/../../images/empty.GIF"/>
+			<td class="ct_write01">
+				<c:set var="i" value="0" />
+				<c:forEach var="file" items="${purchase.purchaseProd.fileName}" >
+					<c:set var="i" value="${ file }" />
+					
+						<img src = "/images/uploadFiles/${ file }" height='150'/>
+				</c:forEach>
+				<br>
 		</td>
 	</tr>
 
@@ -200,7 +221,7 @@
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="/listPurchase.do?userId=${user.userId}">조회</a>
+						조회<%-- <a href="/purchase/listPurchase?userId=${user.userId}">조회</a> --%>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
@@ -210,7 +231,7 @@
 						<img src="/images/ct_btnbg01.gif"width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-						<a href="/listProduct.do?menu=search">검색</a>
+						<a href="/purchase/listProduct?menu=search">검색</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

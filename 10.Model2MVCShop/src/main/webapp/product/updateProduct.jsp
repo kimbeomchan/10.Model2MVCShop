@@ -86,10 +86,14 @@ $(function () {
 			상품이미지 <img 	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<img src = "/images/uploadFiles/${vo.fileName}"/>
-			<input type="file" name="file" class="ct_input_g" 
-							style="width: 200px; height: 19px" maxLength="13"/>
+			<td class="ct_write01">
+				<c:set var="i" value="0" />
+				<c:forEach var="file" items="${vo.fileName}" >
+					<c:set var="i" value="${ file }" />
+					
+						<img src = "/images/uploadFiles/${ file }" height='150'/>${ file }
+				</c:forEach>
+				<br>
 		</td>
 	</tr>
 	<tr>

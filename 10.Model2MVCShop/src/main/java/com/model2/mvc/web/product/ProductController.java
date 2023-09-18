@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -65,7 +66,8 @@ public class ProductController {
 	    	
 	        System.out.println("기존 파일명 : " + product.getFiles()[i].getOriginalFilename());
 	        
-	        fileChangeName = product.getProdName() + "_" + product.getFiles()[i].getOriginalFilename();
+	        UUID uuid = UUID.randomUUID();
+	        fileChangeName = uuid + "_" + product.getFiles()[i].getOriginalFilename();
 	        //==> $ProdName_$FileName.jsp
 	        System.out.println("변경된 파일명 : " + fileChangeName);
 	        
@@ -118,6 +120,15 @@ public class ProductController {
 		//Business Logic
 		Product product = productService.getProduct(prodNo);
 		// Model 과 View 연결
+//		String fileMultiName = product.getFileName();
+//		
+//		String[] fileSplitArray;
+//		
+//		
+//		if(fileMultiName.length() > 0 ) {
+//			product.setFileSplitArray(fileMultiName.split(","));
+//		}
+		
 		model.addAttribute("vo", product);
 		
 		return "forward:/product/getProduct.jsp"+"?prodNo="+prodNo;
@@ -140,7 +151,9 @@ public class ProductController {
 		Map<String , Object> map = productService.getProductList(search);
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
+		System.out.println("\n\n=======================resultPage" + resultPage + "\n\n");
+		System.out.println("======================");
+		System.out.println("======================");
 		
 		// Model 과 View 연결
 		model.addAttribute("list", map.get("list"));
@@ -158,7 +171,7 @@ public class ProductController {
 							    @ModelAttribute("search") Search search, 
 							   	 Model model , HttpServletRequest request) throws Exception{
 		
-		System.out.println("/product/listProduct : POST");
+		System.out.println("===================/product/listProduct : POST===================");
 		
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
@@ -168,8 +181,11 @@ public class ProductController {
 		// Business logic 수행
 		Map<String , Object> map = productService.getProductList(search);
 		
+		System.out.println("map ::: \n" + map +"\n\n");
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
+		System.out.println("\n\n=======================resultPage" + resultPage + "\n\n");
+		System.out.println("======================");
+		System.out.println("======================");
 		
 		// Model 과 View 연결
 		model.addAttribute("list", map.get("list"));
@@ -221,7 +237,7 @@ public class ProductController {
 		
 		model.addAttribute("vo", product);
 		
-		return "forward:/product/updateProductView.jsp";
+		return "forward:/product/updateProduct.jsp";
 	}
 
 }//end of class

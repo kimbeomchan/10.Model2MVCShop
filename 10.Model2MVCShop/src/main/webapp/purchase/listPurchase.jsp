@@ -2,6 +2,7 @@
     pageEncoding="EUC-KR"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
     
 <!DOCTYPE html>
 <html>
@@ -12,11 +13,26 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 <script type="text/javascript">
 	function fncGetPageList(currentPage) {
 		document.getElementById("currentPage").value = currentPage;
 	   	document.detailForm.submit();
 	}
+	
+	$(function () {
+		$(".ct_list_pop td:nth-child(3)").on("click", function() {
+			var tranNo = $(this).data('tranno');
+			
+			$("input[name='tranNo']").val(tranNo);
+			$("form").attr("method", "POST").attr("action", "/purchase/getPurchase").submit();
+		});
+	})
+	
+	
+	
 </script>
 </head>
 
@@ -24,7 +40,9 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/listPurchase.do" method="post">
+<form name="detailForm" >
+<input type="hidden" name="tranNo" />
+<input type="hidden" name="prodNo" value="${purchase.purchaseProd.prodNo}"/>
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -49,7 +67,7 @@
 	<tr>
 		<td class="ct_list_b" width="50">No</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">상품명</td>
+		<td class="ct_list_b" width="150">상품명<br><h7>(상품 Click:: 상세정보)</h7></td>
 		<td class="ct_line02"></td>
 		<td class="ct_list_b" width="150">회원ID</td>
 		<td class="ct_line02"></td>
@@ -76,12 +94,13 @@
 		</td>
 		<td></td>
 		
-		<td align="center">
-			<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${purchase.purchaseProd.prodName}</a> 
+		<td align="center" data-tranno="${purchase.tranNo}">
+			<%-- <a href="/purchase/getPurchase?tranNo=${purchase.tranNo}"></a> --%> 
+			${purchase.purchaseProd.prodName}
 		<td/>
 		
 		<td align="center">
-			<a href="/getUser.do?userId=${user.userId}">${user.userId}</a>
+			<a href="/product/getUser?userId=${user.userId}">${user.userId}</a>
 		</td>
 		<td></td>
 		
@@ -91,16 +110,16 @@
 		<td align="center">${purchase.receiverPhone}</td>
 		<td></td>
 		
-		<td align="center">	현재 
+		<td align="center">	현재 ${purchase.tranCode}
 			<c:choose>
-				<c:when test = "${purchase.tranCode.equals('1')}" >
+				<c:when test = "${fn:trim(purchase.tranCode) == '1'}" >
 					구매완료 상태입니다. 
 				</c:when>
-				<c:when test = "${purchase.tranCode.equals('2')}">
+				<c:when test = "${fn:trim(purchase.tranCode) == '2'}">
 					배송중 상태입니다. 
 					<a href="/updateTranCode.do?prodNo=${purchase.purchaseProd.prodNo}&tranCode=3">물건도착</a>
 				</c:when>
-				<c:when test = "${purchase.tranCode.equals('3')}">
+				<c:when test = "${fn:trim(purchase.tranCode) == '3'}">
 					배송완료 상태입니다. 
 				</c:when>
 			</c:choose>

@@ -11,16 +11,17 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="../javascript/calendar.js">
 </script>
 
 <script type="text/javascript">
-<!--
+
 function fncUpdatePurchase(){
 	//Form 유효성 검증
  	var receiverName = document.detailForm.receiverName.value;
 	var receiverPhone = document.detailForm.receiverPhone.value;
-	var demailAddr = document.detailForm.demailAddr.value;
+	var dlvyAddr = document.detailForm.dlvyAddr.value;
 
 	if(receiverName == null || receiverName.length<1){
 		alert("구매자이름은 반드시 입력하여야 합니다.");
@@ -30,21 +31,27 @@ function fncUpdatePurchase(){
 		alert("구매자연락처는 반드시 입력하여야 합니다.");
 		return;
 	}
-	if(demailAddr == null || demailAddr.length<1){
+	if(dlvyAddr == null || dlvyAddr.length<1){
 		alert("주소는 반드시 입력하셔야 합니다.");
 		return;
 	}
 		
-	document.detailForm.action='/updatePurchase.do';
-	document.detailForm.submit();
+	alert("hiii")
+	$("form").attr("method", "POST").attr("action", "/purchase/updatePurchase").submit();
 }
--->
+
+$(function() {
+	$("td.ct_btn01:contains('수정')").on("click", function() {
+		fncUpdatePurchase();
+	});
+})
+
 </script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post">
+<form name="detailForm" >
 
 <input type="hidden" name="tranNo" value="${purchase.tranNo}" />
 
@@ -132,7 +139,7 @@ function fncUpdatePurchase(){
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input type="text" name="demailAddr" value="${purchase.dlvyAddr}"
+			<input type="text" name="dlvyAddr" value="${purchase.dlvyAddr}"
 						class="ct_input_g" style="width: 100px; height: 19px" maxLength="50"/>&nbsp;
 		</td>
 	</tr>
@@ -167,6 +174,7 @@ function fncUpdatePurchase(){
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
+</table>
 
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
@@ -179,7 +187,7 @@ function fncUpdatePurchase(){
 						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<a href="javascript:fncUpdatePurchase();">수정</a>
+						수정
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

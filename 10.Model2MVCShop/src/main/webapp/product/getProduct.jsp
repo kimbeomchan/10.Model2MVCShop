@@ -14,9 +14,8 @@
 <script type="text/javascript">
 
 $(function () {
-	var prodNo = $(this).data('prodno');
-	
 	$(".ct_btn01:contains('구매')").on("click", function(){
+		var prodNo = $(this).data('prodno');
 		$("form").attr("method", "POST").attr("action", "/purchase/addPurchaseView?prodNo=" + prodNo).submit();
 	})
 })
@@ -35,7 +34,7 @@ $(function () {
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post">
+<form name="detailForm" >
 <input type="hidden" name="prodNo" value="${vo.prodNo}" />
 <input type="hidden" name="menu" value="manage"/>
 
@@ -91,8 +90,13 @@ $(function () {
 			상품이미지 <img 	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
+		<c:set var="i" value="0" />
 		<td class="ct_write01">
-			<img src = "/images/uploadFiles/${vo.fileName}"/>
+		<c:forEach var="file" items="${vo.fileName}" >
+			<c:set var="i" value="${ i }" />
+			
+				<img src = "/images/uploadFiles/${ file }" height='150' />
+		</c:forEach>
 		</td>
 	</tr>
 	<tr>

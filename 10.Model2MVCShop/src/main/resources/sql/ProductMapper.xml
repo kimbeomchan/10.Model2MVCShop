@@ -57,6 +57,29 @@
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT 
+	  									p.prod_no, p.prod_name, p.prod_detail, p.manufacture_day, p.price, p.image_file, TO_CHAR(p.reg_date, 'YYYY-MM-DD') reg_date 
+											FROM product p 
+											<if test="searchCondition != null">
+												<where>
+													<if test="searchCondition == 0 and searchKeyword !='' ">
+										 				p.prod_no = #{searchKeyword:NUMERIC}
+													</if>
+													<if test="searchCondition == 1 and searchKeyword !='' ">
+										 				p.prod_name LIKE '%' || #{searchKeyword} || '%'
+													</if>
+													<if test="searchCondition == 2 and searchKeyword !='' ">
+										 				p.price = #{searchKeyword:NUMERIC}
+													</if>
+												</where>
+											</if>
+											ORDER BY p.prod_no ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	 </select>
+<!-- 	<select  id="getProductList"  parameterType="search"	resultMap="ProductSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT 
 	  									t.tran_status_code, p.prod_no, p.prod_name, p.prod_detail, p.manufacture_day, p.price, p.image_file, TO_CHAR(p.reg_date, 'YYYY-MM-DD') reg_date 
 											FROM product p LEFT JOIN transaction t ON p.prod_no=t.prod_no 
 											<if test="searchCondition != null">
@@ -75,7 +98,7 @@
 											ORDER BY p.prod_no ) inner_table
 						WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
-	 </select>
+	 </select> -->
 	 	<!--  위 두번째 subQuery 의  
 	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는
 	 			WHERE ROWNUM <= #{endRowNum} ) 의미이며..

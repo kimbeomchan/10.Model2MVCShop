@@ -128,8 +128,8 @@
 					<c:forEach var="file" items="${fileSplitArray}" >
 						<c:set var="i" value="${ i }" />
 						<td class="ct_write01">
-							<img src = "/images/uploadFiles/${ file }"/>
-						</td>
+							<img src = "/images/uploadFiles/${ file }" height="150"/>
+						</td><br>
 					</c:forEach>	
 					<%-- <td height="26">
 						<img src="/images/uploadFiles/${product.fileName}"/>
